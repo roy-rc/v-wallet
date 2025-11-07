@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  documento String   @unique
+  nombres   String
+  email     String   @unique
+  celular   String
+  password  String
+  saldo     Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  transacciones Transaccion[]
+  sesionesCompra SesionCompra[]
+}
+
+model Transaccion {
+  id          Int      @id @default(autoincrement())
+  clienteId   Int
+  tipo        String   // 'RECARGA' | 'COMPRA'
+  monto       Decimal  @db.Decimal(10, 2)
+  descripcion String?
+  createdAt   DateTime @default(now())
+  cliente     Cliente  @relation(fields: [clienteId], references: [id])
+}
+
+model SesionCompra {
+  id          String   @id @default(uuid())
+  clienteId   Int
+  monto       Decimal  @db.Decimal(10, 2)
+  token       String
+  confirmado  Boolean  @default(false)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  cliente     Cliente  @relation(fields: [clienteId], references: [id])
+}
