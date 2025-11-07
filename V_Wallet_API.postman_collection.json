@@ -1,0 +1,452 @@
+{
+  "info": {
+    "name": "v-wallet API",
+    "description": "Colección de endpoints para la aplicación de v-wallet con microservicios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "api_url",
+      "value": "http://localhost:3002/api",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Registro de Cliente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains data', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.be.an('object');",
+              "    pm.expect(jsonData.data).to.have.property('id');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"documento\": \"87654321\",\n  \"nombres\": \"Jhon Doe\",\n  \"email\": \"jhon.d@yopmail.com\",\n  \"celular\": \"3012345678\",\n  \"password\": \"MiPassword123\"\n}"
+        },
+        "url": {
+          "raw": "{{api_url}}/clientes/registro",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "clientes",
+            "registro"
+          ]
+        },
+        "description": "Endpoint para registrar un nuevo cliente en el sistema"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains token', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('token');",
+              "    pm.globals.set('auth_token', jsonData.data.token);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"documento\": \"12345678\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{api_url}}/auth/login",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "Endpoint para autenticar un usuario y obtener un token JWT"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Recarga de Billetera",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains new balance', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('nuevoSaldo');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"documento\": \"12345678\",\n  \"celular\": \"3001234567\",\n  \"monto\": 25000\n}"
+        },
+        "url": {
+          "raw": "{{api_url}}/billetera/recarga",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "billetera",
+            "recarga"
+          ]
+        },
+        "description": "Endpoint para recargar saldo en la billetera (requiere autenticación)"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Iniciar Pago",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains sessionId', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('sessionId');",
+              "    pm.globals.set('session_id', jsonData.data.sessionId);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"monto\": 15000,\n  \"descripcion\": \"Pago de prueba desde Postman\"\n}"
+        },
+        "url": {
+          "raw": "{{api_url}}/billetera/pagar",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "billetera",
+            "pagar"
+          ]
+        },
+        "description": "Endpoint para iniciar un pago (genera token y envía email)"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Confirmar Pago",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains new balance', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('nuevoSaldo');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sessionId\": \"{{session_id}}\",\n  \"token\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{api_url}}/billetera/confirmar-pago",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "billetera",
+            "confirmar-pago"
+          ]
+        },
+        "description": "Endpoint para confirmar un pago usando el token de 6 dígitos\n\nNOTA: Reemplaza '123456' por el token real recibido en el email"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Consultar Saldo",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has success true', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "});",
+              "",
+              "pm.test('Response contains balance', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.data).to.have.property('saldo');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{api_url}}/billetera/saldo?documento=12345678&celular=3001234567",
+          "host": [
+            "{{api_url}}"
+          ],
+          "path": [
+            "billetera",
+            "saldo"
+          ],
+          "query": [
+            {
+              "key": "documento",
+              "value": "12345678"
+            },
+            {
+              "key": "celular",
+              "value": "3001234567"
+            }
+          ]
+        },
+        "description": "Endpoint público para consultar el saldo de un cliente"
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check - API Gateway",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Service is running', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "    pm.expect(jsonData.data.service).to.eql('api-gateway');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3002/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3002",
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Health check para verificar que el API Gateway está funcionando"
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check - Database Service",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Service is running', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.true;",
+              "    pm.expect(jsonData.data.service).to.eql('database-service');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Health check para verificar que el Database Service está funcionando"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
