@@ -1,0 +1,16 @@
+{
+  "name": "v-wallet-init",
+  "version": "1.0.0",
+  "description": "Database initialization script for wallet application",
+  "main": "init-db.js",
+  "scripts": {
+    "init": "node init-db.js",
+    "start": "node init-db.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.6.5",
+    "bcrypt": "^5.1.1",
+    "@prisma/client": "^5.7.0",
+    "dotenv": "^16.3.1"
+  }
+}
