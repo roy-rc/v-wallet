@@ -311,9 +311,9 @@ v-wallet/
 git clone [URL_DEL_REPOSITORIO]
 cd v-wallet
 
-# O descargar y extraer en c:\\path\\to\\project\\v-wallet\\
+# O descargar y extraer en c:\path\to\project\v-wallet\
 ```
-1. Crear archivos .env a partir de los archivos .env.sample (v-wallet\.env, v-wallet\frontend\.env, v-wallet\database-service\.env, v-wallet\api-gateway\.env)
+1. Crear archivos .env a partir de los archivos .env.sample (v-wallet\\.env, v-wallet\\frontend\\.env, v-wallet\\database-service\\.env, v-wallet\\api-gateway\\.env)
 2. Modificar los paramentros necesarios en cada uno de los archivos
 
 #### 2. 🔧 Configurar XAMPP
@@ -324,31 +324,37 @@ cd v-wallet
 
 #### 3. 🗄️ Inicializar la base de datos
 
+**IMPORTANTE**: Este paso debe ejecutarse ANTES del paso 4, ya que configura automáticamente el database-service.
+
 ```bash
 # En la raíz del proyecto
-npm install
-npm run init
+npm install      # Instala dependencias del script de inicialización
+npm run init     # Ejecuta el script de configuración automática
 ```
 
-Este script:
-- Verifica la conexión a MySQL
-- Crea la base de datos `wallet_db`
-- Ejecuta las migraciones de Prisma
-- Crea un usuario de prueba
+Este script ejecuta automáticamente:
+- ✅ Verifica la conexión a MySQL
+- ✅ Crea la base de datos `wallet_db`
+- ✅ **Instala dependencias del database-service automáticamente**
+- ✅ Genera el cliente de Prisma
+- ✅ Ejecuta las migraciones de Prisma
+- ✅ Crea un usuario de prueba
 
-#### 4. 📦 Instalar dependencias de cada servicio
+#### 4. 📦 Instalar dependencias de los servicios restantes
+
+**NOTA**: Las dependencias del database-service ya fueron instaladas en el paso 3.
 
 ```bash
-# Database Service
-cd database-service
-npm install
+# Database Service (ya instalado en paso 3)
+# cd database-service
+# npm install  ← NO ES NECESARIO, ya se hizo automáticamente
 
 # API Gateway  
-cd ../api-gateway
+cd api-gateway
 npm install
 
 # Frontend
-cd ../frontend
+cd frontend
 npm install
 ```
 
