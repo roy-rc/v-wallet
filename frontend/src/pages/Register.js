@@ -5,6 +5,8 @@ import { authService } from '../services/api';
 import { getErrorMessage } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Alert from '../components/Alert';
+import Button from '../components/Button';
+import { baseStyles } from '../styles/components';
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -36,18 +38,22 @@ const Register = () => {
 
   if (success) {
     return (
-      <div style={styles.container}>
-        <div style={styles.card}>
-          <div style={styles.header}>
-            <h1>¡Registro Exitoso! ✅</h1>
-            <p>Tu cuenta ha sido creada correctamente</p>
+      <div style={baseStyles.container}>
+        <div style={baseStyles.card}>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={baseStyles.heading}>¡Registro Exitoso! ✅</h1>
+            <p style={baseStyles.subtitle}>Tu cuenta ha sido creada correctamente</p>
           </div>
           
-          <div style={styles.successContent}>
-            <p>Ya puedes iniciar sesión con tus credenciales.</p>
-            <a href="/login" style={styles.loginLink}>
+          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+            <p style={{ marginBottom: '1rem' }}>Ya puedes iniciar sesión con tus credenciales.</p>
+            <Button 
+              variant="primary"
+              onClick={() => window.location.href = '/login'}
+              style={{ display: 'inline-block', textDecoration: 'none' }}
+            >
               Ir al Login
-            </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -55,11 +61,11 @@ const Register = () => {
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.header}>
-          <h1>Crear Cuenta</h1>
-          <p>Regístrate para usar tu v-wallet</p>
+    <div style={baseStyles.container}>
+      <div style={baseStyles.card}>
+        <div>
+          <h1 style={baseStyles.heading}>Crear Cuenta</h1>
+          <p style={baseStyles.subtitle}>Regístrate para usar tu v-wallet</p>
         </div>
         
         {alert && (
@@ -83,174 +89,91 @@ const Register = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form style={styles.form}>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Documento *</label>
+            <Form style={baseStyles.form}>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Documento *</label>
                 <Field
                   name="documento"
                   type="text"
                   placeholder="Número de documento"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="documento" component="div" style={styles.error} />
+                <ErrorMessage name="documento" component="div" style={baseStyles.error} />
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Nombres completos *</label>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Nombres completos *</label>
                 <Field
                   name="nombres"
                   type="text"
                   placeholder="Nombres y apellidos"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="nombres" component="div" style={styles.error} />
+                <ErrorMessage name="nombres" component="div" style={baseStyles.error} />
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Email *</label>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Email *</label>
                 <Field
                   name="email"
                   type="email"
                   placeholder="tu@email.com"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="email" component="div" style={styles.error} />
+                <ErrorMessage name="email" component="div" style={baseStyles.error} />
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Celular *</label>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Celular *</label>
                 <Field
                   name="celular"
                   type="text"
                   placeholder="3001234567"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="celular" component="div" style={styles.error} />
+                <ErrorMessage name="celular" component="div" style={baseStyles.error} />
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Contraseña *</label>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Contraseña *</label>
                 <Field
                   name="password"
                   type="password"
                   placeholder="Mínimo 6 caracteres"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="password" component="div" style={styles.error} />
+                <ErrorMessage name="password" component="div" style={baseStyles.error} />
               </div>
 
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Confirmar contraseña *</label>
+              <div style={baseStyles.inputGroup}>
+                <label style={baseStyles.label}>Confirmar contraseña *</label>
                 <Field
                   name="confirmPassword"
                   type="password"
                   placeholder="Repite tu contraseña"
-                  style={styles.input}
+                  style={baseStyles.input}
                 />
-                <ErrorMessage name="confirmPassword" component="div" style={styles.error} />
+                <ErrorMessage name="confirmPassword" component="div" style={baseStyles.error} />
               </div>
 
-              <button
+              <Button
                 type="submit"
+                variant="success"
                 disabled={isSubmitting || loading}
-                style={styles.button}
+                style={{ marginTop: '1rem' }}
               >
                 {loading ? <LoadingSpinner message="" /> : 'Crear Cuenta'}
-              </button>
+              </Button>
             </Form>
           )}
         </Formik>
         
-        <div style={styles.footer}>
-          <p>¿Ya tienes cuenta? <a href="/login" style={styles.link}>Inicia sesión aquí</a></p>
+        <div style={baseStyles.formFooter}>
+          <p>¿Ya tienes cuenta? <a href="/login" style={baseStyles.link}>Inicia sesión aquí</a></p>
         </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: '1rem',
-  },
-  card: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '500px',
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  label: {
-    marginBottom: '0.5rem',
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  input: {
-    padding: '0.75rem',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    fontSize: '1rem',
-  },
-  error: {
-    color: '#dc3545',
-    fontSize: '0.875rem',
-    marginTop: '0.25rem',
-  },
-  button: {
-    backgroundColor: '#28a745',
-    color: 'white',
-    padding: '0.75rem',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    marginTop: '1rem',
-    minHeight: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footer: {
-    textAlign: 'center',
-    marginTop: '1.5rem',
-    color: '#666',
-  },
-  link: {
-    color: '#007bff',
-    textDecoration: 'none',
-  },
-  successContent: {
-    textAlign: 'center',
-    padding: '2rem 0',
-  },
-  loginLink: {
-    display: 'inline-block',
-    backgroundColor: '#007bff',
-    color: 'white',
-    padding: '0.75rem 1.5rem',
-    textDecoration: 'none',
-    borderRadius: '4px',
-    marginTop: '1rem',
-  },
 };
 
 export default Register;

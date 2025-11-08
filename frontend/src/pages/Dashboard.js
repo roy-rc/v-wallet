@@ -7,7 +7,9 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import Alert from '../components/Alert';
 import Navigation from '../components/Navigation';
 import Icon from '../components/Icon';
+import Button from '../components/Button';
 import useResponsive from '../utils/useResponsive';
+import { baseStyles } from '../styles/components';
 
 const Dashboard = ({ user, onUserUpdate }) => {
   const { isMobile } = useResponsive();
@@ -150,9 +152,9 @@ const Dashboard = ({ user, onUserUpdate }) => {
     switch (activeTab) {
       case 'recarga':
         return (
-          <div style={styles.tabContent}>
-            <h3 style={styles.titleWithIcon}>
-              <Icon name="recharge" size={28} style={styles.titleIcon} />
+          <div>
+            <h3 style={baseStyles.titleWithIcon}>
+              <Icon name="recharge" size={28} style={baseStyles.titleIcon} />
               Recargar Billetera
             </h3>
             <Formik
@@ -165,45 +167,46 @@ const Dashboard = ({ user, onUserUpdate }) => {
               onSubmit={handleRecarga}
             >
               {({ isSubmitting }) => (
-                <Form style={styles.form}>
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Documento</label>
+                <Form style={baseStyles.form}>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Documento</label>
                     <Field
                       name="documento"
                       type="text"
-                      style={styles.input}
+                      style={{...baseStyles.input, backgroundColor: '#f8f9fa', cursor: 'not-allowed'}}
                       readOnly
                     />
                   </div>
 
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Celular</label>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Celular</label>
                     <Field
                       name="celular"
                       type="text"
-                      style={styles.input}
+                      style={{...baseStyles.input, backgroundColor: '#f8f9fa', cursor: 'not-allowed'}}
                       readOnly
                     />
                   </div>
 
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Monto a recargar</label>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Monto a recargar</label>
                     <Field
                       name="monto"
                       type="number"
                       placeholder="0"
-                      style={styles.input}
+                      style={baseStyles.input}
                     />
-                    <ErrorMessage name="monto" component="div" style={styles.error} />
+                    <ErrorMessage name="monto" component="div" style={baseStyles.error} />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
+                    variant="primary"
                     disabled={isSubmitting || loading}
-                    style={styles.primaryButton}
+                    style={{ marginTop: '1rem' }}
                   >
                     {loading ? <LoadingSpinner message="" /> : 'Recargar'}
-                  </button>
+                  </Button>
                 </Form>
               )}
             </Formik>
@@ -212,12 +215,12 @@ const Dashboard = ({ user, onUserUpdate }) => {
 
       case 'pagar':
         return (
-          <div style={styles.tabContent}>
-            <h3 style={styles.titleWithIcon}>
-              <Icon name="payment" variant="black" size={28} style={styles.titleIcon} />
+          <div>
+            <h3 style={baseStyles.titleWithIcon}>
+              <Icon name="payment" variant="black" size={28} style={baseStyles.titleIcon} />
               Realizar Pago
             </h3>
-            <div style={styles.balanceInfo}>
+            <div style={baseStyles.balanceInfo}>
               <p>Saldo disponible: <strong>{formatCurrency(user.saldo)}</strong></p>
             </div>
             <Formik
@@ -229,36 +232,37 @@ const Dashboard = ({ user, onUserUpdate }) => {
               onSubmit={handleIniciarPago}
             >
               {({ isSubmitting }) => (
-                <Form style={styles.form}>
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Monto a pagar</label>
+                <Form style={baseStyles.form}>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Monto a pagar</label>
                     <Field
                       name="monto"
                       type="number"
                       placeholder="0"
-                      style={styles.input}
+                      style={baseStyles.input}
                     />
-                    <ErrorMessage name="monto" component="div" style={styles.error} />
+                    <ErrorMessage name="monto" component="div" style={baseStyles.error} />
                   </div>
 
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Descripción (opcional)</label>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Descripción (opcional)</label>
                     <Field
                       name="descripcion"
                       type="text"
                       placeholder="Concepto del pago"
-                      style={styles.input}
+                      style={baseStyles.input}
                     />
-                    <ErrorMessage name="descripcion" component="div" style={styles.error} />
+                    <ErrorMessage name="descripcion" component="div" style={baseStyles.error} />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
+                    variant="primary"
                     disabled={isSubmitting || loading}
-                    style={styles.primaryButton}
+                    style={{ marginTop: '1rem' }}
                   >
                     {loading ? <LoadingSpinner message="" /> : 'Iniciar Pago'}
-                  </button>
+                  </Button>
                 </Form>
               )}
             </Formik>
@@ -267,18 +271,18 @@ const Dashboard = ({ user, onUserUpdate }) => {
 
       case 'confirmar':
         return (
-          <div style={styles.tabContent}>
-            <h3 style={styles.titleWithIcon}>
-              <Icon name="confirm" size={28} style={styles.titleIcon} />
+          <div>
+            <h3 style={baseStyles.titleWithIcon}>
+              <Icon name="confirm" size={28} style={baseStyles.titleIcon} />
               Confirmar Pago
             </h3>
             {paymentSession ? (
               <>
-                <div style={styles.sessionInfo}>
+                <div style={baseStyles.sessionInfo}>
                   <p><strong>Monto:</strong> {formatCurrency(paymentSession.monto)}</p>
                   <p><strong>Sesión:</strong> {paymentSession.sessionId}</p>
                   {countdown && (
-                    <p style={styles.countdown}>
+                    <p style={baseStyles.countdown}>
                       <strong>Tiempo restante:</strong> {countdown.minutes}:{String(countdown.seconds).padStart(2, '0')}
                     </p>
                   )}
@@ -289,38 +293,40 @@ const Dashboard = ({ user, onUserUpdate }) => {
                   onSubmit={handleConfirmarPago}
                 >
                   {({ isSubmitting }) => (
-                    <Form style={styles.form}>
-                      <div style={styles.inputGroup}>
-                        <label style={styles.label}>Token de confirmación (6 dígitos)</label>
+                    <Form style={baseStyles.form}>
+                      <div style={baseStyles.inputGroup}>
+                        <label style={baseStyles.label}>Token de confirmación (6 dígitos)</label>
                         <Field
                           name="token"
                           type="text"
                           placeholder="123456"
-                          style={styles.input}
+                          style={baseStyles.input}
                         />
-                        <ErrorMessage name="token" component="div" style={styles.error} />
+                        <ErrorMessage name="token" component="div" style={baseStyles.error} />
                       </div>
 
-                      <button
+                      <Button
                         type="submit"
+                        variant="success"
                         disabled={isSubmitting || loading}
-                        style={styles.primaryButton}
+                        style={{ marginTop: '1rem' }}
                       >
                         {loading ? <LoadingSpinner message="" /> : 'Confirmar Pago'}
-                      </button>
+                      </Button>
                     </Form>
                   )}
                 </Formik>
               </>
             ) : (
-              <div style={styles.noSession}>
+              <div style={baseStyles.noSession}>
                 <p>No hay pagos pendientes de confirmación.</p>
-                <button 
-                  style={styles.secondaryButton} 
+                <Button 
+                  variant="secondary"
                   onClick={() => setActiveTab('pagar')}
+                  style={{ marginTop: '1rem' }}
                 >
                   Iniciar Nuevo Pago
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -328,9 +334,9 @@ const Dashboard = ({ user, onUserUpdate }) => {
 
       case 'consultar':
         return (
-          <div style={styles.tabContent}>
-            <h3 style={styles.titleWithIcon}>
-              <Icon name="search" size={28} style={styles.titleIcon} />
+          <div>
+            <h3 style={baseStyles.titleWithIcon}>
+              <Icon name="search" size={28} style={baseStyles.titleIcon} />
               Consultar Saldo
             </h3>
             <Formik
@@ -342,36 +348,37 @@ const Dashboard = ({ user, onUserUpdate }) => {
               onSubmit={handleConsultarSaldo}
             >
               {({ isSubmitting }) => (
-                <Form style={styles.form}>
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Documento</label>
+                <Form style={baseStyles.form}>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Documento</label>
                     <Field
                       name="documento"
                       type="text"
                       placeholder="Número de documento"
-                      style={styles.input}
+                      style={baseStyles.input}
                     />
-                    <ErrorMessage name="documento" component="div" style={styles.error} />
+                    <ErrorMessage name="documento" component="div" style={baseStyles.error} />
                   </div>
 
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Celular</label>
+                  <div style={baseStyles.inputGroup}>
+                    <label style={baseStyles.label}>Celular</label>
                     <Field
                       name="celular"
                       type="text"
                       placeholder="3001234567"
-                      style={styles.input}
+                      style={baseStyles.input}
                     />
-                    <ErrorMessage name="celular" component="div" style={styles.error} />
+                    <ErrorMessage name="celular" component="div" style={baseStyles.error} />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
+                    variant="primary"
                     disabled={isSubmitting || loading}
-                    style={styles.primaryButton}
+                    style={{ marginTop: '1rem' }}
                   >
                     {loading ? <LoadingSpinner message="" /> : 'Consultar Saldo'}
-                  </button>
+                  </Button>
                 </Form>
               )}
             </Formik>
@@ -384,15 +391,15 @@ const Dashboard = ({ user, onUserUpdate }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={isMobile ? styles.mobileDashboard : styles.dashboard}>
+    <div style={baseStyles.dashboardContainer}>
+      <div style={isMobile ? baseStyles.mobileDashboard : baseStyles.dashboard}>
         <Navigation 
           activeTab={activeTab} 
           setActiveTab={setActiveTab} 
           paymentSession={paymentSession} 
         />
 
-        <div style={isMobile ? styles.mobileContent : styles.content}>
+        <div style={isMobile ? baseStyles.mobileContent : baseStyles.content}>
           {alert && (
             <Alert 
               type={alert.type} 
@@ -405,129 +412,6 @@ const Dashboard = ({ user, onUserUpdate }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    minHeight: 'calc(100vh - 80px)',
-    backgroundColor: '#f5f5f5',
-    paddingBottom: '2rem',
-  },
-  dashboard: {
-    display: 'flex',
-    gap: '2rem',
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '2rem',
-  },
-  mobileDashboard: {
-    display: 'block',
-    maxWidth: '100%',
-    margin: '0 auto',
-  },
-  content: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    padding: '2rem',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-  },
-  mobileContent: {
-    backgroundColor: 'white',
-    margin: '1rem',
-    borderRadius: '8px',
-    padding: '1.5rem',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-  },
-  tabContent: {
-    maxWidth: '100%',
-    width: '100%',
-  },
-  titleWithIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-    marginBottom: '1.5rem',
-    color: '#333',
-    fontSize: '1.5rem',
-  },
-  titleIcon: {
-    flexShrink: 0,
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    marginTop: '1.5rem',
-    width: '100%',
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  },
-  label: {
-    marginBottom: '0.5rem',
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    boxSizing: 'border-box',
-  },
-  error: {
-    color: '#dc3545',
-    fontSize: '0.875rem',
-    marginTop: '0.25rem',
-  },
-  primaryButton: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    padding: '0.75rem',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    marginTop: '1rem',
-    minHeight: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButton: {
-    backgroundColor: '#6c757d',
-    color: 'white',
-    padding: '0.75rem 1rem',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '0.9rem',
-    cursor: 'pointer',
-  },
-  balanceInfo: {
-    backgroundColor: '#e9ecef',
-    padding: '1rem',
-    borderRadius: '4px',
-    marginBottom: '1rem',
-  },
-  sessionInfo: {
-    backgroundColor: '#d1ecf1',
-    padding: '1rem',
-    borderRadius: '4px',
-    marginBottom: '1rem',
-  },
-  countdown: {
-    color: '#dc3545',
-    fontWeight: 'bold',
-  },
-  noSession: {
-    textAlign: 'center',
-    padding: '2rem',
-    color: '#666',
-  },
 };
 
 export default Dashboard;
